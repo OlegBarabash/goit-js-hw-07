@@ -29,16 +29,17 @@ function handlerChoosePic(event) {
     if (!event.target.classList.contains("gallery__image")) {
         return
     }
-    const instance = basicLightbox.create( `<img src="${event.target.dataset.source}" width="800" height="600"/>`)
+    const instance = basicLightbox.create(`<img src="${event.target.dataset.source}" width="800" height="600"/>`, {
+        onShow: () => document.addEventListener("keydown", handlerEscape),
+        onClose: () => document.removeEventListener("keydown", handlerEscape)
+    })
     instance.show()
-
-    document.addEventListener("keydown", handlerEscape);
 
     function handlerEscape({code }) {
         if (code !== 'Escape') {
             return
         }
-        instance.close(() => document.removeEventListener("keydown", handlerEscape))
+        instance.close()
     }
 }
 
